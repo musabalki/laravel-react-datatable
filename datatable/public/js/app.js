@@ -2001,7 +2001,7 @@ var Datatable = function Datatable(_ref) {
       data = _useState2[0],
       setData = _useState2[1];
 
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(false),
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(true),
       _useState4 = _slicedToArray(_useState3, 2),
       loading = _useState4[0],
       setLoading = _useState4[1];
@@ -2014,7 +2014,7 @@ var Datatable = function Datatable(_ref) {
   var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(columns[0]),
       _useState8 = _slicedToArray(_useState7, 2),
       sortField = _useState8[0],
-      setSortFiedl = _useState8[1];
+      setSortField = _useState8[1];
 
   var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(SORT_ASC),
       _useState10 = _slicedToArray(_useState9, 2),
@@ -2039,6 +2039,7 @@ var Datatable = function Datatable(_ref) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
+                // setLoading(true)
                 params = {
                   sort_field: sortField,
                   sort_order: sortOrder,
@@ -2062,8 +2063,19 @@ var Datatable = function Datatable(_ref) {
     axios__WEBPACK_IMPORTED_MODULE_1___default().get(fetchUrl).then(function (response) {
       return setTableData(response.data.data);
     });
+    setLoading(false);
     fetchData(); //setTableData(data.data);
   }, [sortField, sortOrder, perPage, currentPage]);
+
+  var handleSort = function handleSort(col) {
+    if (col === sortField) {
+      sortOrder === SORT_ASC ? setSortOrder(SORT_DESC) : setSortOrder(SORT_ASC);
+    } else {
+      setSortField(col);
+      setSortOrder(SORT_ASC);
+    }
+  };
+
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("table", {
       className: "table",
@@ -2071,8 +2083,19 @@ var Datatable = function Datatable(_ref) {
         className: "table-dark",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("tr", {
           children: columns.map(function (column) {
-            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
-              children: column.toUpperCase().replace("_", " ")
+            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("th", {
+              onClick: function onClick(e) {
+                return handleSort(column);
+              },
+              children: [column.toUpperCase().replace("_", " "), column === sortField ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
+                children: sortOrder === SORT_ASC ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("i", {
+                  className: "ms-1 fa fa-arrow-up",
+                  "aria-hidden": "true"
+                }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("i", {
+                  className: "ms-1 fa fa-arrow-down",
+                  "aria-hidden": "true"
+                })
+              }) : null]
             }, column);
           })
         })
