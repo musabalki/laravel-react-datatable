@@ -1,1 +1,1 @@
-# laravel-react-datatable
+# Laravel React datatable Kullanımı
